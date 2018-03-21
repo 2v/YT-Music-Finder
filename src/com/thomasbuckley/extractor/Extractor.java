@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Extractor {
 	 // This is a fake USER_AGENT so the web server thinks the robot is a normal web browser.
@@ -51,7 +53,7 @@ public class Extractor {
                 }
                 
                 // Checks if the page has the specified words
-                if (checkForMatchingWord(document, genre) && checkForMatchingWord(document, "Category") && checkForMatchingWord(document, "Music") && checkForPlaylist(URL, "list")) {
+                if (checkForMatchingWord(document, genre) && checkForMatchingWord(document, "Category") && checkForMatchingWord(document, "Music") && checkForPlaylist(URL, playlistWord)) {
                 	System.out.println("Success finding " + genre + " music.");
                 	
                     for (Element page : linksOnPage) {
@@ -59,6 +61,7 @@ public class Extractor {
 
                             System.out.println(URL);
                         }
+                        
                         getPageLinks(page.attr("abs:href"), depth, genre);
                         
 						if (!listOfLinks.contains(URL)) {
@@ -95,6 +98,10 @@ public class Extractor {
 		if (URL.contains(word)) { return false; }
     	return true;
     }
+	
+	public String getGenre() {
+		return genre;
+	}
     
     public ArrayList<String> getList() {
 		return listOfLinks;
