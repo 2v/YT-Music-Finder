@@ -22,6 +22,7 @@ public class Extractor {
     private HashSet<String> links;
     private static ArrayList<String> listOfLinks;
     private String genre;
+    private String playlistWord = "list";
     
     public Extractor() {
         links = new HashSet<>();
@@ -50,9 +51,9 @@ public class Extractor {
                 }
                 
                 // Checks if the page has the specified words
-                if (checkForMatchingWord(document, genre) || checkForMatchingWord(document, "Category\r\n" + 
-                		"Music")) {
+                if (checkForMatchingWord(document, genre) && checkForMatchingWord(document, "Category") && checkForMatchingWord(document, "Music") && checkForPlaylist(URL, "list")) {
                 	System.out.println("Success finding " + genre + " music.");
+                	
                     for (Element page : linksOnPage) {
                         if (links.add(URL)) {
 
@@ -64,6 +65,8 @@ public class Extractor {
 							listOfLinks.add(URL); //The absolute URL of the article
 						}
                     }
+                    
+                    
                 } else {
                 	System.out.println("Falure finding " + genre + " music.");
                     for (Element page : linksOnPage) {
@@ -76,8 +79,8 @@ public class Extractor {
             }
         }
     }
-    
-    public boolean checkForMatchingWord(Document document, String word) {
+
+	public boolean checkForMatchingWord(Document document, String word) {
     	Elements comments = document.select("div:contains(" + word + ")");
 
     	if (comments.hasText()) {
@@ -85,6 +88,12 @@ public class Extractor {
     	}
     	
     	return false;
+    }
+	
+	public boolean checkForPlaylist(String URL, String word) {
+		
+		if (URL.contains(word)) { return false; }
+    	return true;
     }
     
     public ArrayList<String> getList() {
