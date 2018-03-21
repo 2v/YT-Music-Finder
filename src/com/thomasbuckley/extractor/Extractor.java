@@ -21,13 +21,15 @@ public class Extractor {
     private static final int MAX_DEPTH = 2;
     private HashSet<String> links;
     private static ArrayList<String> listOfLinks;
+    private String genre;
     
     public Extractor() {
         links = new HashSet<>();
 		listOfLinks = new ArrayList<>();
     }
 
-    public void getPageLinks(String URL, int depth) {
+    public void getPageLinks(String URL, int depth, String genre) {
+    	this.genre = genre;
         if ((!links.contains(URL) && (depth <= MAX_DEPTH))) {
             System.out.println(">> Depth: " + depth + " [" + URL + "]");
             try {
@@ -48,25 +50,25 @@ public class Extractor {
                 }
                 
                 // Checks if the page has the specified words
-                if (checkForMatchingWord(document, "jazz") || checkForMatchingWord(document, "Category\r\n" + 
+                if (checkForMatchingWord(document, genre) || checkForMatchingWord(document, "Category\r\n" + 
                 		"Music")) {
-                	System.out.println("Success finding specified music.");
+                	System.out.println("Success finding " + genre + " music.");
                     for (Element page : linksOnPage) {
                         if (links.add(URL)) {
 
                             System.out.println(URL);
                         }
-                        getPageLinks(page.attr("abs:href"), depth);
+                        getPageLinks(page.attr("abs:href"), depth, genre);
                         
 						if (!listOfLinks.contains(URL)) {
 							listOfLinks.add(URL); //The absolute URL of the article
 						}
                     }
                 } else {
-                	System.out.println("Falure finding specified music.");
+                	System.out.println("Falure finding " + genre + " music.");
                     for (Element page : linksOnPage) {
                         
-                        getPageLinks(page.attr("abs:href"), depth);
+                        getPageLinks(page.attr("abs:href"), depth, genre);
                     }
                 }
             } catch (IOException e) {
@@ -81,6 +83,7 @@ public class Extractor {
     	if (comments.hasText()) {
     		return true;
     	}
+    	
     	return false;
     }
     
