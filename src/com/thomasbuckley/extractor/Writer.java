@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 public class Writer {
 	private String filename;
-	private ArrayList<String> listOfLinks = new ArrayList<>();
 	
 	public Writer(String filename) {
 		this.filename = filename;
@@ -16,8 +15,7 @@ public class Writer {
 		this.filename = "Music Links";
 	}
 	
-    public void writeToFile(String filename, ArrayList<String> listOfLinks) {
-		this.listOfLinks = listOfLinks;
+    public void writeToFile(ArrayList<String> listOfLinks) {
         FileWriter writer;
         try {
             writer = new FileWriter(filename);

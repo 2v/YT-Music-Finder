@@ -84,16 +84,8 @@ public class Extractor {
     	return false;
     }
     
-    public static ArrayList<String> getList() {
+    public ArrayList<String> getList() {
 		return listOfLinks;
-    }
-
-    public static void main(String[] args) {
-    	Extractor extractor = new Extractor();
-    	Writer writer = new Writer("List of Jazz Links");
-    	extractor.getPageLinks("https://www.youtube.com/watch?v=lpGpndN4q5U", 0);
-    	writer.writeToFile("Jazz Music", getList());
-    	System.out.println("Success! Thanks for using!");
     }
 }
 
