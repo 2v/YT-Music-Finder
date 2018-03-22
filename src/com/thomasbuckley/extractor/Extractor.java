@@ -20,7 +20,7 @@ public class Extractor {
 	 // This is a fake USER_AGENT so the web server thinks the robot is a normal web browser.
     private static final String USER_AGENT =
             "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/13.0.782.112 Safari/535.1";
-    private static final int MAX_DEPTH = 6;
+    private static final int MAX_DEPTH = 2;
     private HashSet<String> links;
     private static ArrayList<String> listOfLinks;
     private String genre;
@@ -33,7 +33,7 @@ public class Extractor {
 
     public void getPageLinks(String URL, int depth, String genre) {
     	this.genre = genre;
-        if ((!links.contains(URL) && (depth <= MAX_DEPTH))) {
+        if (!links.contains(URL) && (depth <= MAX_DEPTH) && checkForPlaylist(URL, playlistWord)) {
             System.out.println(">> Depth: " + depth + " [" + URL + "]");
             try {
                 links.add(URL);
@@ -53,7 +53,7 @@ public class Extractor {
                 }
                 
                 // Checks if the page has the specified words
-                if (checkForMatchingWord(document, genre) && checkForMatchingWord(document, "Category") && checkForMatchingWord(document, "Music") && checkForPlaylist(URL, playlistWord)) {
+                if (checkForMatchingWord(document, genre) && checkForMatchingWord(document, "Category") && checkForMatchingWord(document, "Music")) {
                 	System.out.println("Success finding " + genre + " music.");
                 	
                     for (Element page : linksOnPage) {
